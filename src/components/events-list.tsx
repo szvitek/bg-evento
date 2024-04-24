@@ -1,11 +1,14 @@
-import { EventoEvent } from '@/lib/types';
 import EventCard from './event-card';
+import { getEvents } from '@/lib/utils';
 
 type EventsListProps = {
-  events: EventoEvent[];
+  city: string;
 };
 
-export default function EventsList({ events }: EventsListProps) {
+// a wrapper component that does the data fetching would be better
+export default async function EventsList({ city }: EventsListProps) {
+  const events = await getEvents(city);
+
   return (
     <section className="max-w-[1100px] flex flex-wrap gap-10 justify-center px-[20px]">
       {events.map((event) => (

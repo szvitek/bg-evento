@@ -1,24 +1,30 @@
 import H1 from '@/components/h1';
 import { EventoEvent } from '@/lib/types';
-import { sleep } from '@/lib/utils';
+import { getEvent } from '@/lib/utils';
+import { Metadata } from 'next';
 import Image from 'next/image';
 import React from 'react';
 
-type EventPageProps = {
+type Props = {
   params: {
     slug: string;
   };
 };
 
-export default async function EventPage({ params }: EventPageProps) {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = params;
+  const event = await getEvent(slug);
+  // it's ok to use the same fetch call twice,
+  // since it's result cached by next
 
-  await sleep(2000);
+  return {
+    title: event.name,
+  };
+}
 
-  const response = await fetch(
-    `https://bytegrad.com/course-assets/projects/evento/api/events/${slug}`
-  );
-  const event: EventoEvent = await response.json();
+export default async function EventPage({ params }: Props) {
+  const { slug } = params;
+  const event = await getEvent(slug);
 
   return (
     <main>
