@@ -1,5 +1,6 @@
 import H1 from '@/components/h1';
 import { EventoEvent } from '@/lib/types';
+import { sleep } from '@/lib/utils';
 import Image from 'next/image';
 import React from 'react';
 
@@ -11,6 +12,9 @@ type EventPageProps = {
 
 export default async function EventPage({ params }: EventPageProps) {
   const { slug } = params;
+
+  await sleep(2000);
+
   const response = await fetch(
     `https://bytegrad.com/course-assets/projects/evento/api/events/${slug}`
   );
